@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disaster Relief - Emergency App</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  ...
+</head>
+<body>
+<!-- SOS Countdown & Cancel Modal Popup -->
+<div id="sosModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+  <div style="background: #ffffff; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    <div style="width: 60px; height: 60px; background: rgba(255,59,48,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+      <i class="fa-solid fa-triangle-exclamation" style="font-size: 28px; color: #ff3b30;"></i>
+    </div>
+    <h3 style="font-size: 18px; font-weight: bold; color: #1c1c1e; margin: 0 0 8px 0;">Emergency SOS Alert</h3>
+    <p style="font-size: 13px; color: #666; margin: 0 0 20px 0;">Sending emergency message in <span id="sosTimer" style="font-weight: bold; color: #ff3b30; font-size: 16px;">3</span> seconds...</p>
+    
+    <!-- Cancel Button -->
+    <button onclick="cancelSOS()" style="background: #8e8e93; color: white; border: none; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(142,142,147,0.3);">
+      CANCEL
+    </button>
+  </div>
+</div>
+  <div id="appSplashScreen" class="splash-screen-overlay">
+    <div class="splash-content">
+      <div class="splash-logo-box">
+        <i class="fa-solid fa-hand-holding-hand splash-logo-icon"></i>
+        <div class="splash-pulse-ring"></div>
+      </div>
+      <h2 class="splash-app-title">Disaster Relief</h2>
+      <p class="splash-app-tagline">Emergency Guardian & Support</p>
+      
+      <div class="splash-loading-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="screen-1" class="screen active"> ... </div>
+
+  <div class="mobile-frame">
+
+    <!-- Screen 1: Splash Screen -->
+    <div id="screen-1" class="screen active">
+      <div class="splash-center">
+        <div class="app-logo">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+        <h2>Disaster Relief</h2>
+        <p>Stay Safe, Stay Connected</p>
+      </div>
+      <div class="screen-footer">
+        <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+        <button class="btn btn-orange" onclick="nextScreen(2)">Continue <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Screen 2: Onboarding 1 -->
+    <div id="screen-2" class="screen">
+      <div class="illustration-box">
+        <div class="vector-badge red-badge">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+      </div>
+      <div class="onboard-text">
+        <h3>Emergency support at Your Fingertips</h3>
+        <p>Connect instantly with police, firefighters, ambulance, and rescue teams during emergencies.</p>
+      </div>
+      <div class="screen-footer">
+        <div class="dots"><span class="dot"></span><span class="dot active"></span><span class="dot"></span></div>
+        <button class="btn btn-orange" onclick="nextScreen(3)">Next <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Screen 3: Onboarding 2 -->
+    <div id="screen-3" class="screen">
+      <div class="illustration-box">
+        <div class="vector-badge orange-badge">
+          <i class="fa-solid fa-map-location-dot"></i>
+        </div>
+      </div>
+      <div class="onboard-text">
+        <h3>Track and Share your real-time location</h3>
+        <p>Track and Share your real-time location to get help quickly during emergencies.</p>
+      </div>
+      <div class="screen-footer">
+        <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot active"></span></div>
+        <button class="btn btn-orange" onclick="nextScreen(4)">Get Started <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Login -->
+    
+    <div id="screen-4" class="screen">
+      <div class="login-header">
+        <div class="mini-logo"><i class="fa-solid fa-shield-heart"></i></div>
+        <h3>Stay Safe,<br>We're Here for You</h3>
+      </div>
+      <div class="form-body">
+        <div class="input-box">
+          <input type="text" id="loginEmail" placeholder="Email or Phone" value="balaji@gmail.com" />
+        </div>
+        <div class="input-box pass-box">
+          <input type="password" id="loginPass" placeholder="Password" value="••••••••" />
+          <i class="fa-regular fa-eye-slash" id="toggleEye" onclick="togglePassword()"></i>
+        </div>
+        <!-- Updated Link -->
+        <a href="#" class="forgot-pwd" onclick="openForgotPasswordScreen()">Forget Password ?</a>
+        <button class="btn btn-orange btn-full" onclick="nextScreen(5)">Sign in</button>
+        <div class="divider"><span>or</span></div>
+        <p class="signup-link">New Here? <a href="#" onclick="openSignupScreen()">Create Account</a></p>
+      </div>
+    </div>
+
+    <!-- Screen 4C: Forgot Password -->
+    <div id="screen-forgot-pwd" class="screen">
+      <div class="login-header">
+        <div class="mini-logo"><i class="fa-solid fa-key"></i></div>
+        <h3>Reset Password</h3>
+        <p style="font-size: 13px; color: #666;">Enter your registered Email or Phone to receive a verification code</p>
+      </div>
+      
+      <!-- Step 1: Send Reset Code -->
+      <div id="forgotStep1" class="form-body" style="margin-top: 20px;">
+        <div class="input-box">
+          <input type="text" id="resetAccountInput" placeholder="Email or Phone Number" value="balaji@gmail.com" />
+        </div>
+        <button class="btn btn-orange btn-full" onclick="sendResetCode()">Send Verification Code</button>
+        <div class="divider"><span>or</span></div>
+        <p class="signup-link">Remember your password? <a href="#" onclick="openLoginScreen()">Sign In</a></p>
+      </div>
+
+      <!-- Step 2: Verification Code & New Password (Hidden Initially) -->
+      <div id="forgotStep2" class="form-body hidden" style="margin-top: 15px;">
+        <div class="input-box">
+          <input type="text" id="otpInput" placeholder="Enter 4-digit OTP (e.g. 1234)" maxLength="4" />
+        </div>
+        <div class="input-box pass-box">
+          <input type="password" id="newPassInput" placeholder="New Password" />
+          <i class="fa-regular fa-eye-slash" id="toggleNewEye" onclick="toggleNewPassword()"></i>
+        </div>
+        <button class="btn btn-orange btn-full" onclick="confirmResetPassword()">Update Password</button>
+        <p class="signup-link" style="margin-top: 12px;"><a href="#" onclick="sendResetCode()">Resend OTP Code</a></p>
+      </div>
+    </div>
+    <div id="screen-4" class="screen">
+      <div class="login-header">
+        <div class="mini-logo"><i class="fa-solid fa-shield-heart"></i></div>
+        <h3>Stay Safe,<br>We're Here for You</h3>
+      </div>
+      <div class="form-body">
+        <div class="input-box">
+          <input type="text" id="loginEmail" placeholder="Email or Phone" value="balaji@gmail.com" />
+        </div>
+        <div class="input-box pass-box">
+          <input type="password" id="loginPass" placeholder="Password" value="••••••••" />
+          <i class="fa-regular fa-eye-slash" id="toggleEye" onclick="togglePassword()"></i>
+        </div>
+        <a href="#" class="forgot-pwd">Forget Password ?</a>
+        <button class="btn btn-orange btn-full" onclick="nextScreen(5)">Sign in</button>
+        <div class="divider"><span>or</span></div>
+        <p class="signup-link">New Here? <a href="#" onclick="openSignupScreen()">Create Account</a></p>
+      </div>
+    </div>
+
+    <!-- Screen 4B: Create Account / Signup -->
+    <div id="screen-signup" class="screen">
+      <div class="login-header">
+        <div class="mini-logo"><i class="fa-solid fa-user-plus"></i></div>
+        <h3>Create Account</h3>
+        <p style="font-size: 13px; color: #666;">Join us to stay safe and connected</p>
+      </div>
+      <div class="form-body" style="margin-top: 15px;">
+        <div class="input-box">
+          <input type="text" id="regName" placeholder="Full Name (e.g. Balaji N)" />
+        </div>
+        <div class="input-box">
+          <input type="text" id="regEmail" placeholder="Email or Phone Number" />
+        </div>
+        <div class="input-box pass-box">
+          <input type="password" id="regPass" placeholder="Password" />
+          <i class="fa-regular fa-eye-slash" id="toggleRegEye" onclick="toggleRegPassword()"></i>
+        </div>
+        <div class="input-box">
+          <input type="tel" id="regEmergencyPhone" placeholder="Emergency Contact Number" />
+        </div>
+        <button class="btn btn-orange btn-full" onclick="handleRegistration()">Create Account</button>
+        <div class="divider"><span>or</span></div>
+        <p class="signup-link">Already have an account? <a href="#" onclick="openLoginScreen()">Sign In</a></p>
+      </div>
+    </div>
+    <div id="screen-4" class="screen">
+      <div class="login-header">
+        <div class="mini-logo"><i class="fa-solid fa-shield-heart"></i></div>
+        <h3>Stay Safe,<br>We're Here for You</h3>
+      </div>
+      <div class="form-body">
+        <div class="input-box">
+          <input type="text" id="loginEmail" placeholder="Email or Phone" value="balaji@gmail.com" />
+        </div>
+        <div class="input-box pass-box">
+          <input type="password" id="loginPass" placeholder="Password" value="••••••••" />
+          <i class="fa-regular fa-eye-slash" id="toggleEye" onclick="togglePassword()"></i>
+        </div>
+        <a href="#" class="forgot-pwd">Forget Password ?</a>
+        <button class="btn btn-orange btn-full" onclick="nextScreen(5)">Sign in</button>
+        <div class="divider"><span>or</span></div>
+        <p class="signup-link">New Here? <a href="#">Create Account</a></p>
+      </div>
+    </div>
+
+    <!-- MAIN APP FLOW (Screens 5 to 15) -->
+    <div id="app-flow" class="app-flow hidden">
+
+      <!-- Header -->
+      <div class="app-header">
+        <div class="user-info">
+          <div class="greeting">Hi, <b>Balaji N</b> 👋</div>
+          <div class="location-tag"><i class="fa-solid fa-location-dot"></i> Coimbatore, Tamil Nadu, India</div>
+        </div>
+        <div class="profile-icon-btn" onclick="switchTab(14)">
+          <i class="fa-solid fa-circle-user"></i>
+        </div>
+      </div>
+
+      <!-- App Body Area -->
+      <div class="app-body">
+
+        <!-- Screen 5: Dashboard --><!-- SAFE ZONE VIEW CONTAINER START --><!-- SAFE ZONE HUB WITH BUILT-IN MODAL & SCRIPT -->
+<div id="safeZoneView" class="view hidden" style="display: none; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; background: #0f172a; color: #ffffff; padding: 18px; box-sizing: border-box; z-index: 2500; overflow-y: auto;">
+    
+    <!-- Top Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-arrow-left" onclick="switchTab(5)" style="font-size: 22px; cursor: pointer; color: #f43f5e; background: rgba(244, 63, 94, 0.15); padding: 8px 12px; border-radius: 12px;"></i>
+            <div>
+                <h3 style="margin: 0; font-size: 19px; font-weight: 700; color: #ffffff;">Safe Zone Hub</h3>
+                <span style="font-size: 11px; color: #94a3b8;">Real-Time Protection & Emergency Zones</span>
+            </div>
+        </div>
+        <span style="background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: bold;">LIVE GPS</span>
+    </div>
+
+    <!-- Weather Banner -->
+    <div style="background: linear-gradient(135deg, #1e293b, #334155); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(56, 189, 248, 0.2); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-cloud-sun" style="font-size: 22px; color: #38bdf8;"></i>
+            </div>
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: #f8fafc;">Coimbatore: 28°C</div>
+                <div style="font-size: 11px; color: #cbd5e1;">Weather normal • Clear Zone</div>
+            </div>
+        </div>
+        <span style="font-size: 10px; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; padding: 4px 8px; border-radius: 8px; font-weight: bold;">Clear Zone</span>
+    </div>
+
+    <!-- Live Radar Card -->
+   <!-- REAL-TIME ANIMATED RADAR CARD -->
+<div style="background: linear-gradient(180deg, #1e1b4b, #0f172a); border: 1px solid #4338ca; border-radius: 20px; padding: 20px; margin-bottom: 20px; position: relative; overflow: hidden; text-align: center; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);">
+    
+    <div style="font-size: 12px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-radar" style="color: #6366f1; font-size: 14px;"></i> LIVE RADAR SCANNER
+    </div>
+
+    <!-- Animated Radar Screen -->
+    <div class="radar-container">
+        <!-- Background Grid Rings -->
+        <div class="static-ring s-1"></div>
+        <div class="static-ring s-2"></div>
+        <div class="static-ring s-3"></div>
+
+        <!-- Expanding Pulsing Waves -->
+        <div class="pulse-wave wave-1"></div>
+        <div class="pulse-wave wave-2"></div>
+
+        <!-- Rotating Sweep Beam -->
+        <div class="radar-sweep-line"></div>
+
+        <!-- Center Glowing Pin -->
+        <div class="radar-center-dot"></div>
+
+        <!-- Live Location Pins -->
+        <div class="radar-blip blip-gh">
+            <i class="fa-solid fa-hospital"></i> GH
+        </div>
+        <div class="radar-blip blip-police">
+            <i class="fa-solid fa-shield-halved"></i> Police
+        </div>
+    </div>
+
+    <p style="font-size: 11px; color: #a5b4fc; margin-top: 12px; margin-bottom: 0; font-weight: 600;">
+        <i class="fa-solid fa-satellite-dish" style="color: #ef4444; margin-right: 4px;"></i> Scanning 5 KM Radius Active
+    </p>
+</div>
+    <!-- 4 Emergency Folders (Direct Function Call) -->
+    <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #cbd5e1;">Nearby Emergency Folders</h4>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+        
+        <div onclick="showInlineFolder('Hospitals', 'fa-hospital', '#38bdf8', ['Coimbatore GH - 0.8km', 'KMCH Emergency - 2.1km', 'GKNM Hospital - 3.5km'])" style="background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-hospital" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Hospitals</div>
+            <div style="font-size: 11px; opacity: 0.9;">3 Safe Centers Near</div>
+        </div>
+
+        <div onclick="showInlineFolder('Police Control', 'fa-building-shield', '#818cf8', ['Central Police Station - 1.2km', 'All Women Police Station - 2.0km'])" style="background: linear-gradient(135deg, #4f46e5, #3730a3); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-building-shield" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Police Control</div>
+            <div style="font-size: 11px; opacity: 0.9;">1.2 KM Nearby</div>
+        </div>
+
+        <div onclick="showInlineFolder('Fire Station', 'fa-fire-extinguisher', '#fb923c', ['Coimbatore Main Fire Station - 2.4km', 'Peelamedu Fire Station - 4.1km'])" style="background: linear-gradient(135deg, #ea580c, #c2410c); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-fire-extinguisher" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Fire Station</div>
+            <div style="font-size: 11px; opacity: 0.9;">2.4 KM Active</div>
+        </div>
+
+        <div onclick="showInlineFolder('Safe Shelters', 'fa-person-shelter', '#4ade80', ['Community Rescue Center - 1.5km', 'Corporation Relief Shelter - 2.8km'])" style="background: linear-gradient(135deg, #059669, #047857); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-person-shelter" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Safe Shelters</div>
+            <div style="font-size: 11px; opacity: 0.9;">2 Verified Zones</div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP INSIDE VIEW -->
+    <div id="inlineModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(6px); z-index: 5000; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;">
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 20px; width: 100%; max-width: 350px; padding: 20px; color: #ffffff;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i id="inlineModalIcon" class="fa-solid" style="font-size: 20px;"></i>
+                    <h3 id="inlineModalTitle" style="margin: 0; font-size: 17px; font-weight: 700;">Folder</h3>
+                </div>
+                <i class="fa-solid fa-xmark" onclick="hideInlineFolder()" style="font-size: 20px; cursor: pointer; color: #94a3b8;"></i>
+            </div>
+            
+            <div id="inlineModalBody" style="display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto;">
+                <!-- Items list -->
+            </div>
+
+            <button onclick="hideInlineFolder()" style="width: 100%; margin-top: 15px; background: #ef4444; color: #ffffff; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer;">Close</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- INLINE SCRIPT (Script.js Dependancy Illaama Work Aaga) -->
+<script>
+function showInlineFolder(title, iconClass, iconColor, items) {
+    document.getElementById('inlineModalTitle').innerText = title;
+    const icon = document.getElementById('inlineModalIcon');
+    icon.className = 'fa-solid ' + iconClass;
+    icon.style.color = iconColor;
+
+    const body = document.getElementById('inlineModalBody');
+    body.innerHTML = '';
+
+    items.forEach(item => {
+        const div = document.createElement('div');
+        div.style.cssText = "background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600;";
+        div.innerHTML = `
+            <span>${item}</span>
+            <a href="https://maps.google.com" target="_blank" style="background: #22c55e; color: #fff; padding: 6px 10px; border-radius: 8px; text-decoration: none; font-size: 11px;">Directions</a>
+        `;
+        body.appendChild(div);
+    });
+
+    const modal = document.getElementById('inlineModal');
+    modal.style.display = 'flex';
+}
+
+function hideInlineFolder() {
+    document.getElementById('inlineModal').style.display = 'none';
+}
+</script>
+<div id="safeZoneView" class="view hidden" style="display: none; width: 100%; min-height: 100vh; background: #0f172a; color: #ffffff; padding: 18px; box-sizing: border-box; position: absolute; top: 0; left: 0; z-index: 2500; overflow-y: auto;">
+    
+    <!-- Top Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-arrow-left" onclick="switchTab(5)" style="font-size: 22px; cursor: pointer; color: #f43f5e; background: rgba(244, 63, 94, 0.15); padding: 8px 12px; border-radius: 12px;"></i>
+            <div>
+                <h3 style="margin: 0; font-size: 19px; font-weight: 700; color: #ffffff;">Safe Zone Hub</h3>
+                <span style="font-size: 11px; color: #94a3b8;">Real-Time Protection & Emergency Zones</span>
+            </div>
+        </div>
+        <span style="background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: bold;">LIVE GPS</span>
+    </div>
+
+    <!-- Weather & Alert Banner -->
+    <div style="background: linear-gradient(135deg, #1e293b, #334155); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(56, 189, 248, 0.2); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-cloud-sun" style="font-size: 22px; color: #38bdf8;"></i>
+            </div>
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: #f8fafc;">Coimbatore: 28°C</div>
+                <div style="font-size: 11px; color: #cbd5e1;">Weather normal • No severe alerts</div>
+            </div>
+        </div>
+        <span style="font-size: 10px; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; padding: 4px 8px; border-radius: 8px; font-weight: bold;">Clear Zone</span>
+    </div>
+
+    <!-- Animated Radar Visual Card -->
+    <div style="background: linear-gradient(180deg, #1e1b4b, #0f172a); border: 1px solid #4338ca; border-radius: 20px; padding: 20px; margin-bottom: 20px; position: relative; overflow: hidden; text-align: center;">
+        <div style="font-size: 12px; font-weight: 600; color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">
+            <i class="fa-solid fa-radar" style="margin-right: 6px; color: #818cf8;"></i> Live Radar Scanner
+        </div>
+        <div style="height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div class="radar-ring ring-1"></div>
+            <div class="radar-ring ring-2"></div>
+            <div class="radar-ring ring-3"></div>
+            <div class="radar-sweep"></div>
+            <div style="width: 20px; height: 20px; background: #f43f5e; border-radius: 50%; box-shadow: 0 0 20px #f43f5e; z-index: 10; border: 2px solid #ffffff;"></div>
+        </div>
+        <p style="font-size: 11px; color: #94a3b8; margin-top: 10px; margin-bottom: 0;">Scanning 5 KM Radius Active</p>
+    </div>
+
+    <!-- Colorful Folder Cards Grid with Click Events -->
+    <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #cbd5e1;">Nearby Emergency Folders</h4>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+        <div onclick="openFolderDetails('hospitals')" style="background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-hospital" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Hospitals</div>
+            <div style="font-size: 11px; opacity: 0.9;">3 Safe Centers Near</div>
+        </div>
+
+        <div onclick="openFolderDetails('police')" style="background: linear-gradient(135deg, #4f46e5, #3730a3); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-building-shield" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Police Control</div>
+            <div style="font-size: 11px; opacity: 0.9;">1.2 KM Nearby</div>
+        </div>
+
+        <div onclick="openFolderDetails('fire')" style="background: linear-gradient(135deg, #ea580c, #c2410c); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-fire-extinguisher" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Fire Station</div>
+            <div style="font-size: 11px; opacity: 0.9;">2.4 KM Active</div>
+        </div>
+
+        <div onclick="openFolderDetails('shelters')" style="background: linear-gradient(135deg, #059669, #047857); border-radius: 16px; padding: 14px; color: #ffffff; cursor: pointer;">
+            <i class="fa-solid fa-person-shelter" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Safe Shelters</div>
+            <div style="font-size: 11px; opacity: 0.9;">2 Verified Zones</div>
+        </div>
+    </div>
+
+    <!-- EMERGENCY FOLDER DETAILS MODAL POPUP (SAFE ZONE KU ULLA MUKKIYAM) -->
+    <div id="folderModal" class="hidden" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(5px); z-index: 3000; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box;">
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 20px; width: 100%; max-width: 350px; padding: 18px; box-shadow: 0 20px 25px rgba(0, 0, 0, 0.5); color: #ffffff; position: relative;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i id="folderModalIcon" class="fa-solid fa-hospital" style="font-size: 18px; color: #38bdf8;"></i>
+                    <h3 id="folderModalTitle" style="margin: 0; font-size: 16px; font-weight: 700;">Folder Title</h3>
+                </div>
+                <i class="fa-solid fa-xmark" onclick="closeFolderModal()" style="font-size: 18px; cursor: pointer; color: #94a3b8; padding: 4px;"></i>
+            </div>
+            <div id="folderModalList" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;"></div>
+            <button onclick="closeFolderModal()" style="width: 100%; margin-top: 15px; background: #ef4444; color: #ffffff; border: none; padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 13px;">Close</button>
+        </div>
+    </div>
+
+</div> <!-- SAFE ZONE VIEW CONTAINER END -->
+       <!-- COLORFUL SAFE ZONE RADAR & FOLDER VIEW --><!-- EMERGENCY FOLDER DETAILS MODAL POPUP -->
+<div id="folderModal" class="hidden" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 4000; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;">
+    
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 20px; width: 100%; max-width: 380px; padding: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); color: #ffffff; position: relative;">
+        
+        <!-- Modal Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i id="folderModalIcon" class="fa-solid fa-hospital" style="font-size: 20px; color: #38bdf8;"></i>
+                <h3 id="folderModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">Folder Title</h3>
+            </div>
+            <i class="fa-solid fa-xmark" onclick="closeFolderModal()" style="font-size: 20px; cursor: pointer; color: #94a3b8; padding: 4px;"></i>
+        </div>
+
+        <!-- Dynamic List Container -->
+        <div id="folderModalList" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; padding-right: 4px;">
+            <!-- Content dynamically generated by JS -->
+        </div>
+
+        <!-- Modal Footer -->
+        <button onclick="closeFolderModal()" style="width: 100%; margin-top: 15px; background: #ef4444; color: #ffffff; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px;">
+            Close
+        </button>
+    </div>
+</div>
+<div id="safeZoneView" class="view hidden" style="display: none; width: 100%; min-height: 100vh; background: #0f172a; color: #ffffff; padding: 18px; box-sizing: border-box; position: absolute; top: 0; left: 0; z-index: 2500; overflow-y: auto;">
+    
+    <!-- Top Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-arrow-left" onclick="switchTab(5)" style="font-size: 22px; cursor: pointer; color: #f43f5e; background: rgba(244, 63, 94, 0.15); padding: 8px 12px; border-radius: 12px;"></i>
+            <div>
+                <h3 style="margin: 0; font-size: 19px; font-weight: 700; color: #ffffff;">Safe Zone Hub</h3>
+                <span style="font-size: 11px; color: #94a3b8;">Real-Time Protection & Emergency Zones</span>
+            </div>
+        </div>
+        <span style="background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; letter-spacing: 0.5px; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);">LIVE GPS</span>
+    </div>
+
+    <!-- Weather & Alert Banner -->
+    <div style="background: linear-gradient(135deg, #1e293b, #334155); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(56, 189, 248, 0.2); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-cloud-sun" style="font-size: 22px; color: #38bdf8;"></i>
+            </div>
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: #f8fafc;">Coimbatore: 28°C</div>
+                <div style="font-size: 11px; color: #cbd5e1;">Weather normal • No severe alerts</div>
+            </div>
+        </div>
+        <span style="font-size: 10px; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; padding: 4px 8px; border-radius: 8px; font-weight: bold;">Clear Zone</span>
+    </div>
+
+    <!-- Animated Radar Visual Card -->
+    <div style="background: linear-gradient(180deg, #1e1b4b, #0f172a); border: 1px solid #4338ca; border-radius: 20px; padding: 20px; margin-bottom: 20px; position: relative; overflow: hidden; text-align: center;">
+        <div style="font-size: 12px; font-weight: 600; color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">
+            <i class="fa-solid fa-radar" style="margin-right: 6px; color: #818cf8;"></i> Live Radar Scanner
+        </div>
+
+        <!-- Radar Rings -->
+        <div style="height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div class="radar-ring ring-1"></div>
+            <div class="radar-ring ring-2"></div>
+            <div class="radar-ring ring-3"></div>
+            <div class="radar-sweep"></div>
+            
+            <!-- Center Node -->
+            <div style="width: 20px; height: 20px; background: #f43f5e; border-radius: 50%; box-shadow: 0 0 20px #f43f5e; z-index: 10; border: 2px solid #ffffff;"></div>
+
+            <!-- Ping Spots -->
+            <div class="radar-pin pin-1" style="border-color: #38bdf8; color: #38bdf8;">
+                <i class="fa-solid fa-hospital"></i> <span>GH</span>
+            </div>
+            <div class="radar-pin pin-2" style="border-color: #4ade80; color: #4ade80;">
+                <i class="fa-solid fa-shield-halved"></i> <span>Police</span>
+            </div>
+        </div>
+
+        <p style="font-size: 11px; color: #94a3b8; margin-top: 10px; margin-bottom: 0;">
+            <i class="fa-solid fa-satellite" style="color: #6366f1;"></i> Scanning 5 KM Radius Active
+        </p>
+    </div>
+    
+
+    <!-- Colorful Folder Cards Grid -->
+    <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #cbd5e1;">Nearby Emergency Folders</h4>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+        <!-- Card 1: Hospitals -->
+        <div style="background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 16px; padding: 14px; color: #ffffff; box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);">
+            <i class="fa-solid fa-hospital" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Hospitals</div>
+            <div style="font-size: 11px; opacity: 0.9;">3 Safe Centers Near</div>
+        </div>
+
+        <!-- Card 2: Police Stations -->
+        <div style="background: linear-gradient(135deg, #4f46e5, #3730a3); border-radius: 16px; padding: 14px; color: #ffffff; box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);">
+            <i class="fa-solid fa-building-shield" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Police Control</div>
+            <div style="font-size: 11px; opacity: 0.9;">1.2 KM Nearby</div>
+        </div>
+
+        <!-- Card 3: Fire Station -->
+        <div style="background: linear-gradient(135deg, #ea580c, #c2410c); border-radius: 16px; padding: 14px; color: #ffffff; box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);">
+            <i class="fa-solid fa-fire-extinguisher" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Fire Station</div>
+            <div style="font-size: 11px; opacity: 0.9;">2.4 KM Active</div>
+        </div>
+
+        <!-- Card 4: Safe Shelters -->
+        <div style="background: linear-gradient(135deg, #059669, #047857); border-radius: 16px; padding: 14px; color: #ffffff; box-shadow: 0 6px 16px rgba(5, 150, 105, 0.3);">
+            <i class="fa-solid fa-person-shelter" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <div style="font-size: 15px; font-weight: 700;">Safe Shelters</div>
+            <div style="font-size: 11px; opacity: 0.9;">2 Verified Zones</div>
+       
+          </div>
+    </div>
+</div>
+      
+        <div id="view-5" class="view active">
+          <div class="sos-center-area">
+            <button class="sos-red-button" onclick="triggerSOS()">
+              <span>SOS</span>
+            </button>
+          </div>
+          <div class="card-grid">
+            <div class="dash-card" onclick="switchTab(6)">
+              <i class="fa-solid fa-location-crosshairs card-ic"></i>
+              <h4>Live Location</h4>
+              <p>View your real-time location on map</p>
+            </div>
+            <div class="dash-card" onclick="switchTab(7)">
+              <i class="fa-solid fa-address-book card-ic"></i>
+              <h4>Emergency Contacts</h4>
+              <p>Quickly connect with your saved contacts</p>
+            </div>
+            <div class="dash-card" onclick="switchTab(8)">
+              <i class="fa-solid fa-triangle-exclamation card-ic"></i>
+              <h4>Disaster Alerts</h4>
+              <p>Gets real-time alerts and safety updates</p>
+            </div>
+            <div class="dash-card" onclick="switchTab(9)">
+              <i class="fa-solid fa-phone-volume card-ic"></i>
+              <h4>Emergency Numbers</h4>
+              <p>Important helpline numbers</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 6: Live Location -->
+        <!-- Screen 6: Live Location (Light Theme) -->
+        <div id="view-6" class="view" style="display: none; width: 100%; min-height: 100vh; position: absolute; top: 0; left: 0; padding: 20px; box-sizing: border-box; z-index: 2500; background: #ffffff;">
+          
+          <!-- Header (Clean Light Style) -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="back-btn" onclick="switchTab(5)" style="background: #f1f5f9; border: 1px solid #cbd5e1; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #0f172a;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #0f172a;">Live Location & Map</h3>
+                    <span style="font-size: 9px; color: #64748b; font-weight: 700; letter-spacing: 1px;">REALTIME GPS TRACKER</span>
+                </div>
+            </div>
+            <div class="neon-badge" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 800;">
+                GPS ACTIVE
+            </div>
+          </div>
+
+          <!-- Address & GPS Accuracy Badge -->
+          <div class="current-loc-badge" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 14px 16px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-location-dot" style="color: #2563eb; font-size: 16px;"></i> 
+                <span id="currentLocText" style="color: #1e293b; font-size: 13px; font-weight: 700;">Locating via GPS...</span> 
+            </div>
+          </div>
+
+          <!-- Clickable Static Map Box (Opens Google Maps on Click) -->
+          <div class="map-wrapper-box" onclick="openInGoogleMaps()" style="width: 100%; height: 36vh; border-radius: 22px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 10px 25px rgba(0,0,0,0.08); margin-bottom: 16px; position: relative; cursor: pointer; background: #f1f5f9;">
+            <img id="staticMapImg" src="https://static-maps.yandex.ru/1.x/?lang=en-US&ll=76.9558,11.0168&z=14&l=map&size=600,400&pt=76.9558,11.0168,pm2rdm" alt="Live Map" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+            
+            <!-- Floating Google Maps Click Prompt -->
+            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid #94a3b8; padding: 7px 16px; border-radius: 20px; color: #0f172a; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color: #2563eb;"></i> CLICK TO OPEN GOOGLE MAPS
+            </div>
+          </div>
+
+          <!-- Share Action Buttons -->
+          <div class="share-btn-group" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; width: 100%;">
+          
+            <button class="btn btn-outline" onclick="shareToWhatsApp()" title="Share to WhatsApp" style="width: 100%; background: #16a34a; border: none; color: #ffffff; padding: 14px; border-radius: 16px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);">
+              <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Share Live Location via WhatsApp
+            </button>
+          </div>
+
+          <!-- Blinking SOS Strip (Light Emergency Alert Style) -->
+          <div class="sos-strip-blinking" onclick="triggerSOS()" style="background: #fef2f2; border: 1px solid #fca5a5; padding: 12px 16px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #991b1b; font-size: 12px; font-weight: 700; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);">
+            <span style="color: #7f1d1d; font-size: 11px; font-weight: 700;">Tap for Emergency</span>
+            <div class="mini-sos-btn" style="background: #dc2626; color: #fff; padding: 6px 14px; border-radius: 10px; font-weight: 900; letter-spacing: 1px;"><i class="fa-solid fa-bell"></i> SOS</div>
+            <span style="color: #7f1d1d; font-size: 11px; font-weight: 700;">Send Alert</span>
+          </div>
+        </div>
+        
+        <!-- Screen 7: Emergency Contacts -->
+       
+        <div id="view-7" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Emergency Contacts</h3>
+          </div>
+          <div class="contacts-wrapper">
+            <div class="section-tag"><i class="fa-solid fa-shield-halved"></i> Trusted Contacts</div>
+            
+            <!-- Dynamic Contact List Container -->
+            <div id="contactListContainer" class="contact-list-box">
+              <div class="contact-card">
+                <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="contact-details"><h5>Amma</h5><p>+91 9876543210</p></div>
+                <a href="tel:9876543210" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+                <button class="btn-delete" onclick="deleteContact(this)" title="Delete Contact"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+              <div class="contact-card">
+                <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="contact-details"><h5>Appa</h5><p>+91 9876543211</p></div>
+                <a href="tel:9876543211" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+                <button class="btn-delete" onclick="deleteContact(this)" title="Delete Contact"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+              <div class="contact-card">
+                <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="contact-details"><h5>Sister</h5><p>+91 9876543212</p></div>
+                <a href="tel:9876543212" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+                <button class="btn-delete" onclick="deleteContact(this)" title="Delete Contact"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </div>
+
+            <button class="btn btn-soft btn-full" onclick="openAddContactModal()"><i class="fa-solid fa-plus"></i> Add New Contact</button>
+            <button class="btn btn-orange btn-full" onclick="alert('All Contacts Saved Successfully!')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          </div>
+        </div>
+        <div id="view-7" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Emergency Contacts</h3>
+          </div>
+          <div class="contacts-wrapper">
+            <div class="section-tag"><i class="fa-solid fa-shield-halved"></i> Trusted Contacts</div>
+            
+            <!-- Dynamic Contact List Container -->
+            <div id="contactListContainer" class="contact-list-box">
+              <div class="contact-card">
+                <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="contact-details"><h5>Amma</h5><p>+91 9876543210</p></div>
+                <a href="tel:9876543210" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+              </div>
+              <div class="contact-card">
+                <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="contact-details"><h5>Appa</h5><p>+91 9876543211</p></div>
+                <a href="tel:9876543211" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+              </div>
+              <div class="contact-card">
+                <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="contact-details"><h5>Sister</h5><p>+91 9876543212</p></div>
+                <a href="tel:9876543212" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+              </div>
+            </div>
+
+            <button class="btn btn-soft btn-full" onclick="openAddContactModal()"><i class="fa-solid fa-plus"></i> Add New Contact</button>
+            <button class="btn btn-orange btn-full" onclick="alert('All Contacts Saved Successfully!')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          </div>
+        </div>
+        <!-- Add Contact Modal Popup -->
+    <div id="contactModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h3>Add Emergency Contact</h3>
+        <div class="input-box" style="margin-top: 15px;">
+          <input type="text" id="newContactName" placeholder="Contact Name (e.g. Brother)" />
+        </div>
+        <div class="input-box">
+          <input type="tel" id="newContactPhone" placeholder="Phone Number (e.g. +91 98765...)" />
+        </div>
+        <div class="modal-btns">
+          <button class="btn btn-outline" onclick="closeAddContactModal()">Cancel</button>
+          <button class="btn btn-orange" onclick="saveNewContact()">Add Contact</button>
+        </div>
+      </div>
+    </div>
+        <div id="view-7" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Emergency Contacts</h3>
+          </div>
+          <div class="contacts-wrapper">
+            <div class="section-tag"><i class="fa-solid fa-shield-halved"></i> Trusted Contacts</div>
+            <div class="contact-card">
+              <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="contact-details"><h5>Amma</h5><p>+91 9876543210</p></div>
+              <a href="tel:9876543210" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+            </div>
+            <div class="contact-card">
+              <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="contact-details"><h5>Appa</h5><p>+91 9876543211</p></div>
+              <a href="tel:9876543211" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+            </div>
+            <div class="contact-card">
+              <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="contact-details"><h5>Sister</h5><p>+91 9876543212</p></div>
+              <a href="tel:9876543212" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+            </div>
+            <div class="contact-card">
+              <div class="contact-avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="contact-details"><h5>Friend</h5><p>+91 9876543213</p></div>
+              <a href="tel:9876543213" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+            </div>
+            <button class="btn btn-soft btn-full"><i class="fa-solid fa-plus"></i> Add New Contact</button>
+            <button class="btn btn-orange btn-full" onclick="alert('Contacts Saved!')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          </div>
+        </div>
+
+        <!-- Screen 8: Disaster Alerts -->
+     
+        <div id="view-8" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Disaster Alerts</h3>
+          </div>
+
+          <!-- Locate Me GPS Button -->
+          <button class="btn btn-orange btn-full" style="margin-bottom: 15px;" onclick="locateUserGPS()">
+            <i class="fa-solid fa-crosshairs"></i> Locate Me (GPS)
+          </button>
+
+          <div class="alerts-wrapper">
+            <div class="alert-box blue-alert" onclick="openAlertDetail('Flood Alert', 'Coimbatore, TN', 'High water levels reported in low-lying areas. Move to safe high ground immediately.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-house-chimney-crack alert-ic"></i>
+              <div>
+                <h5>Flood Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+
+            <div class="alert-box blue-alert" onclick="openAlertDetail('Heavy Rain Warning', 'Coimbatore, TN', 'Continuous heavy rainfall expected for next 24 hours. Avoid unnecessary travel.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-cloud-showers-heavy alert-ic"></i>
+              <div>
+                <h5>Heavy Rain Warning</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+
+            <div class="alert-box yellow-alert" onclick="openAlertDetail('Cyclone Alert', 'Coimbatore, TN', 'Strong wind gusts up to 70 km/h expected. Secure loose outdoor objects.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-wind alert-ic"></i>
+              <div>
+                <h5>Cyclone Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+
+            <div class="alert-box red-alert" onclick="openAlertDetail('Fire Alert', 'Coimbatore, TN', 'Industrial zone fire reported. Emergency services on site. Keep windows closed.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-fire alert-ic"></i>
+              <div>
+                <h5>Fire Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+          </div>
+        </div><!-- Alert Detail Modal -->
+    <div id="alertModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h3 id="alertTitle">Alert Title</h3>
+        <p id="alertLocation" style="font-weight: bold; color: #ff4757; margin: 5px 0;"></p>
+        <p id="alertDescription" style="font-size: 14px; margin: 10px 0; color: #555;"></p>
+        <small id="alertTime" style="color: #888; display: block; margin-bottom: 15px;"></small>
+        <button class="btn btn-orange btn-full" onclick="closeAlertDetail()">Close</button>
+      </div>
+    </div>
+        <div id="view-8" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Disaster Alerts</h3>
+          </div>
+
+          <!-- Locate Me Button -->
+          <button class="btn btn-orange btn-full" style="margin-bottom: 15px;" onclick="locateUserGPS()">
+            <i class="fa-solid fa-crosshairs"></i> Locate Me (GPS)
+          </button>
+
+          <div class="alerts-wrapper">
+            <div class="alert-box blue-alert" onclick="openAlertDetail('Flood Alert', 'Coimbatore, TN', 'High water levels reported in low-lying areas. Move to safe high ground immediately.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-house-chimney-crack alert-ic"></i>
+              <div>
+                <h5>Flood Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+
+            <div class="alert-box blue-alert" onclick="openAlertDetail('Heavy Rain Warning', 'Coimbatore, TN', 'Continuous heavy rainfall expected for next 24 hours. Avoid unnecessary travel.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-cloud-showers-heavy alert-ic"></i>
+              <div>
+                <h5>Heavy Rain Warning</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+
+            <div class="alert-box yellow-alert" onclick="openAlertDetail('Cyclone Alert', 'Coimbatore, TN', 'Strong wind gusts up to 70 km/h expected. Secure loose outdoor objects.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-wind alert-ic"></i>
+              <div>
+                <h5>Cyclone Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+
+            <div class="alert-box red-alert" onclick="openAlertDetail('Fire Alert', 'Coimbatore, TN', 'Industrial zone fire reported. Emergency services on site. Keep windows closed.', 'Jul 27, 04:00 pm')">
+              <i class="fa-solid fa-fire alert-ic"></i>
+              <div>
+                <h5>Fire Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+                <small style="text-decoration: underline;">Tap to view details</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="view-8" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Disaster Alerts</h3>
+          </div>
+          <div class="alerts-wrapper">
+            <div class="alert-box blue-alert">
+              <i class="fa-solid fa-house-chimney-crack alert-ic"></i>
+              <div>
+                <h5>Flood Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+              </div>
+            </div>
+            <div class="alert-box blue-alert">
+              <i class="fa-solid fa-cloud-showers-heavy alert-ic"></i>
+              <div>
+                <h5>Heavy Rain Warning</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+              </div>
+            </div>
+            <div class="alert-box yellow-alert">
+              <i class="fa-solid fa-wind alert-ic"></i>
+              <div>
+                <h5>Cyclone Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+              </div>
+            </div>
+            <div class="alert-box red-alert">
+              <i class="fa-solid fa-fire alert-ic"></i>
+              <div>
+                <h5>Fire Alert</h5>
+                <p>Coimbatore, TN • Updated on : Jul 27, 04:00 pm</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 9: Emergency Numbers -->
+         
+        <div id="view-9" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Emergency Numbers</h3>
+          </div>
+          <div class="helpline-grid">
+            
+            <!-- Police -->
+            <div class="helpline-card">
+              <i class="fa-solid fa-shield-halved"></i>
+              <h4>Police</h4>
+              <span>100</span>
+              <a href="tel:100" class="btn btn-orange btn-full btn-sm">
+                <i class="fa-solid fa-phone"></i> Call 100
+              </a>
+            </div>
+
+            <!-- Ambulance -->
+            <div class="helpline-card">
+              <i class="fa-solid fa-truck-medical"></i>
+              <h4>Ambulance</h4>
+              <span>108</span>
+              <a href="tel:108" class="btn btn-orange btn-full btn-sm">
+                <i class="fa-solid fa-phone"></i> Call 108
+              </a>
+            </div>
+
+            <!-- Fire Service -->
+            <div class="helpline-card">
+              <i class="fa-solid fa-fire-extinguisher"></i>
+              <h4>Fire Service</h4>
+              <span>101</span>
+              <a href="tel:101" class="btn btn-orange btn-full btn-sm">
+                <i class="fa-solid fa-phone"></i> Call 101
+              </a>
+            </div>
+
+            <!-- Women Helpline -->
+            <div class="helpline-card">
+              <i class="fa-solid fa-person-breastfeeding"></i>
+              <h4>Women Helpline</h4>
+              <span>1091</span>
+              <a href="tel:1091" class="btn btn-orange btn-full btn-sm">
+                <i class="fa-solid fa-phone"></i> Call 1091
+              </a>
+            </div>
+
+            <!-- Disaster Management -->
+            <div class="helpline-card">
+              <i class="fa-solid fa-house-tsunami"></i>
+              <h4>Disaster Helpline</h4>
+              <span>1070</span>
+              <a href="tel:1070" class="btn btn-orange btn-full btn-sm">
+                <i class="fa-solid fa-phone"></i> Call 1070
+              </a>
+            </div>
+
+            <!-- Share Live Location -->
+            <div class="helpline-card" onclick="switchTab(6)" style="cursor: pointer;">
+              <i class="fa-solid fa-location-arrow"></i>
+              <h4>Share Location</h4>
+              <span>With Rescuers</span>
+              <button class="btn btn-soft btn-full btn-sm">
+                <i class="fa-solid fa-share-nodes"></i> Share
+              </button>
+            </div>
+
+          </div>
+        </div>
+        <div id="view-9" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Emergency Numbers</h3>
+          </div>
+          <div class="helpline-grid">
+            <a href="tel:100" class="helpline-card">
+              <i class="fa-solid fa-handshake-angle"></i>
+              <h4>Call Police</h4>
+              <span>100</span>
+            </a>
+            <a href="tel:108" class="helpline-card">
+              <i class="fa-solid fa-truck-medical"></i>
+              <h4>Call Ambulance</h4>
+              <span>108</span>
+            </a>
+            <a href="tel:101" class="helpline-card">
+              <i class="fa-solid fa-fire-extinguisher"></i>
+              <h4>Call Fire Service</h4>
+              <span>101</span>
+            </a>
+            <div class="helpline-card" onclick="switchTab(6)">
+              <i class="fa-solid fa-location-arrow"></i>
+              <h4>Share Live Location</h4>
+              <span>With Rescuers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 10: AI Emergency Assistant -->
+      
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          
+          <div class="ai-assistant-wrapper">
+            <!-- AI Banner -->
+            <div class="periya-ai-banner">
+              <div class="big-ai-robot-avatar">
+                <i class="fa-solid fa-robot"></i>
+                <div class="robot-glow-ring"></div>
+              </div>
+              <div class="ai-banner-content">
+                <h4>AI Emergency Guardian 🤖</h4>
+                <p>Speak via mic or record voice notes below.</p>
+              </div>
+            </div>
+
+            <!-- Chat Messages Box -->
+            <div id="chatBox" class="chat-messages-container">
+              <div class="chat-bubble bot">
+                <i class="fa-solid fa-robot bot-ic"></i>
+                <div style="flex: 1;">
+                  <b>AI Assistant</b>
+                  <p>Tap the mic to speak or record a voice note for emergency help!</p>
+                </div>
+                <button class="delete-msg-btn" onclick="deleteChatBubble(this)" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </div>
+
+            <!-- Live Voice Recording Wave Box (Hidden by default) -->
+            <div id="recordingWaveBox" class="recording-wave-box hidden">
+              <div class="pulse-mic-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+              <div class="recording-info">
+                <span>Recording voice note...</span>
+                <b id="recordingTimer">00:00</b>
+              </div>
+              <button class="cancel-rec-btn" onclick="cancelVoiceRecording()" title="Cancel"><i class="fa-solid fa-trash"></i></button>
+            </div>
+
+            <!-- Prompt Box with Mic, Record & Send Buttons -->
+            <div class="chat-prompt-box" id="chatPromptArea">
+              <input type="text" id="chatInput" placeholder="Type or use mic..." onkeypress="handleKeyPress(event)" />
+              
+              <!-- Speech-to-Text Mic Button -->
+              <button class="mic-btn" id="micBtn" onclick="startSpeechRecognition()" title="Speak to Text">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+
+              <!-- Audio Recorder Button -->
+              <button class="record-btn" id="recordAudioBtn" onclick="toggleAudioRecording()" title="Record & Play Audio Note">
+                <i class="fa-solid fa-circle-dot"></i>
+              </button>
+
+              <button class="send-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          
+          <div class="ai-assistant-wrapper">
+            <!-- Periya AI Robot Banner -->
+            <div class="periya-ai-banner">
+              <div class="big-ai-robot-avatar">
+                <i class="fa-solid fa-robot"></i>
+                <div class="robot-glow-ring"></div>
+              </div>
+              <div class="ai-banner-content">
+                <h4>AI Emergency Guardian 🤖</h4>
+                <p>Hi Balaji! Speak or type below during emergencies.</p>
+              </div>
+            </div>
+
+            <!-- Chat Messages Box -->
+            <div id="chatBox" class="chat-messages-container">
+              <div class="chat-bubble bot">
+                <i class="fa-solid fa-robot bot-ic"></i>
+                <div style="flex: 1;">
+                  <b>AI Assistant</b>
+                  <p>How can I assist you right now? (e.g. Flood, Fire, Medical)</p>
+                </div>
+                <button class="delete-msg-btn" onclick="deleteChatBubble(this)" title="Delete Message"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </div>
+
+            <!-- Live Voice Recording Wave Indicator (Hidden by default) -->
+            <div id="recordingWaveBox" class="recording-wave-box hidden">
+              <div class="pulse-mic-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+              <div class="recording-info">
+                <span>Recording voice message...</span>
+                <b id="recordingTimer">00:00</b>
+              </div>
+              <button class="cancel-rec-btn" onclick="cancelVoiceRecording()" title="Cancel Recording"><i class="fa-solid fa-trash"></i></button>
+            </div>
+
+            <!-- Input Box with Mic, Record & Send Buttons -->
+            <div class="chat-prompt-box" id="chatPromptArea">
+              <input type="text" id="chatInput" placeholder="Type or record emergency..." onkeypress="handleKeyPress(event)" />
+              
+              <button class="mic-btn" id="micBtn" onclick="startSpeechRecognition()" title="Voice Speech Input">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+
+              <button class="record-btn" id="recordAudioBtn" onclick="toggleAudioRecording()" title="Hold/Tap to Record Audio">
+                <i class="fa-solid fa-circle-dot"></i>
+              </button>
+
+              <button class="send-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          
+          <div class="ai-assistant-wrapper">
+          
+            <div class="periya-ai-banner">
+              <div class="big-ai-robot-avatar">
+                <i class="fa-solid fa-robot"></i>
+                <div class="robot-glow-ring"></div>
+              </div>
+              <div class="ai-banner-content">
+                <h4>AI Emergency Guardian 🤖</h4>
+                <p>Hi Balaji! Speak or type below during emergencies.</p>
+              </div>
+            </div>
+
+            <!-- Chat Messages Box -->
+            <div id="chatBox" class="chat-messages-container">
+              <div class="chat-bubble bot">
+                <i class="fa-solid fa-robot bot-ic"></i>
+                <div>
+                  <b>AI Assistant</b>
+                  <p>How can I assist you right now? (e.g. Flood, Fire, Medical)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Voice Recording Wave Indicator (Hidden by default) -->
+            <div id="recordingWaveBox" class="recording-wave-box hidden">
+              <div class="pulse-mic-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+              <div class="recording-info">
+                <span>Recording voice message...</span>
+                <b id="recordingTimer">00:00</b>
+              </div>
+              <button class="cancel-rec-btn" onclick="cancelVoiceRecording()" title="Cancel Recording"><i class="fa-solid fa-trash"></i></button>
+            </div>
+
+            <!-- Input Box with Mic, Record & Send Buttons -->
+            <div class="chat-prompt-box" id="chatPromptArea">
+              <input type="text" id="chatInput" placeholder="Type or record emergency..." onkeypress="handleKeyPress(event)" />
+              
+              <!-- Direct Voice Speech-to-Text Button -->
+              <button class="mic-btn" id="micBtn" onclick="startSpeechRecognition()" title="Voice Speech Input">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+
+              <!-- Audio Recording & Send Button -->
+              <button class="record-btn" id="recordAudioBtn" onclick="toggleAudioRecording()" title="Hold/Tap to Record Audio">
+                <i class="fa-solid fa-circle-dot"></i>
+              </button>
+
+              <button class="send-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          
+          <div class="ai-assistant-wrapper">
+          
+            <div class="periya-ai-banner">
+              <div class="big-ai-robot-avatar">
+                <i class="fa-solid fa-robot"></i>
+                <div class="robot-glow-ring"></div>
+              </div>
+              <div class="ai-banner-content">
+                <h4>AI Emergency Guardian 🤖</h4>
+                <p>Hi Balaji! I'm active 24/7. Speak or type below during emergencies.</p>
+              </div>
+            </div>
+
+            <!-- Chat Messages Box -->
+            <div id="chatBox" class="chat-messages-container">
+              <div class="chat-bubble bot">
+                <i class="fa-solid fa-robot bot-ic"></i>
+                <div>
+                  <b>AI Assistant</b>
+                  <p>How can I assist you right now? (e.g. Flood, Fire, Medical)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Box with Mic -->
+            <div class="chat-prompt-box">
+              <input type="text" id="chatInput" placeholder="Speak or type your emergency..." onkeypress="handleKeyPress(event)" />
+              <button class="mic-btn" id="micBtn" onclick="startVoiceRecognition()" title="Voice Input">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+              <button class="send-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          
+          <div class="ai-assistant-wrapper">
+            <!-- Glowing AI Robot Header Banner -->
+            <div class="ai-banner-card">
+              <div class="ai-avatar-pulse">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+              <div class="ai-banner-text">
+                <h4>Hi Balaji! 🤖</h4>
+                <p>I'm your AI Emergency Assistant. Online & ready to help!</p>
+              </div>
+            </div>
+
+            <!-- Chat Container -->
+            <div id="chatBox" class="chat-messages-container">
+              <div class="chat-bubble bot">
+                <i class="fa-solid fa-robot bot-ic"></i>
+                <div>
+                  <b>AI Guardian</b>
+                  <p>Tell me your emergency or ask for safety instructions. I am listening!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Box with Mic -->
+            <div class="chat-prompt-box">
+              <input type="text" id="chatInput" placeholder="Speak or type your emergency..." onkeypress="handleKeyPress(event)" />
+              <button class="mic-btn" id="micBtn" onclick="startVoiceRecognition()" title="Voice Input">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+              <button class="send-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          <div class="chat-wrapper">
+            <div id="chatBox" class="chat-messages-container">
+              <div class="chat-bubble bot">
+                <i class="fa-solid fa-robot bot-ic"></i>
+                <div>
+                  <b>Hi Balaji ! 👋</b>
+                  <p>I'm your AI Emergency Assistant. How can I help you today?</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat-prompt-box">
+              <input type="text" id="chatInput" placeholder="Speak or type your emergency..." onkeypress="handleKeyPress(event)" />
+              <button class="mic-btn" id="micBtn" onclick="startVoiceRecognition()" title="Speak via Mic">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+              <button class="send-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="view-10" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>AI Emergency Assistant</h3>
+          </div>
+          <div class="chat-wrapper">
+            <div class="chat-bubble bot">
+              <i class="fa-solid fa-robot bot-ic"></i>
+              <div>
+                <b>Hi Balaji ! 👋</b>
+                <p>I'm your AI Emergency Assistant. How can I help you today?</p>
+              </div>
+            </div>
+            <div class="chat-prompt-box">
+              <input type="text" placeholder="Speak or type your emergency..." />
+              <button class="mic-btn"><i class="fa-solid fa-microphone"></i></button>
+              <button class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 11: Nearby Relief -->
+        <div id="view-11" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Nearby Relief</h3>
+          </div>
+          <div class="relief-list">
+            <div class="relief-card" onclick="switchTab(12)">
+              <div class="relief-head">
+                <h4>Government Relief Camp</h4>
+                <span class="badge green">Open 24/7</span>
+              </div>
+              <p><i class="fa-solid fa-location-dot"></i> Coimbatore, TN • 800 m away</p>
+            </div>
+            <div class="relief-card" onclick="switchTab(12)">
+              <div class="relief-head">
+                <h4>City Hospital</h4>
+                <span class="badge green">Open 24/7</span>
+              </div>
+              <p><i class="fa-solid fa-location-dot"></i> Coimbatore, TN • 1.2 km away</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 12: Relief Center Details -->
+       
+        <div id="view-12" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(5)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Nearby Relief Camps</h3>
+          </div>
+
+          <!-- Dynamic Search Box -->
+          <div class="search-box-wrapper" style="margin-bottom: 12px;">
+            <i class="fa-solid fa-magnifying-glass search-ic"></i>
+            <input type="text" id="reliefSearchInput" placeholder="Search by area or camp name..." onkeyup="filterReliefCamps()" />
+          </div>
+
+          <div class="relief-list-container" id="reliefCampList">
+            
+            <!-- Camp 1 -->
+            <div class="relief-camp-card">
+              <div class="camp-top-row">
+                <div class="camp-title">
+                  <h5>Government Relief Camp</h5>
+                  <p><i class="fa-solid fa-location-dot"></i> PSG Convention Centre, Peelamedu</p>
+                </div>
+                <span class="status-badge badge-open">Open</span>
+              </div>
+              <div class="camp-details">
+                <span><i class="fa-solid fa-person-shelter"></i> Capacity: <b>350/500</b></span>
+                <span><i class="fa-solid fa-route"></i> Distance: <b>4.5 km</b></span>
+              </div>
+              <div class="camp-facilities">
+                <span class="facility-tag"><i class="fa-solid fa-utensils"></i> Food</span>
+                <span class="facility-tag"><i class="fa-solid fa-kit-medical"></i> Medical</span>
+                <span class="facility-tag"><i class="fa-solid fa-mattress-pillow"></i> Beds</span>
+              </div>
+              <div class="camp-actions">
+                <a href="tel:04222300000" class="btn btn-outline btn-sm"><i class="fa-solid fa-phone"></i> Call</a>
+                <button class="btn btn-orange btn-sm" onclick="switchTab(13)"><i class="fa-solid fa-diamond-turn-right"></i> Directions</button>
+              </div>
+            </div>
+
+            <!-- Camp 2 -->
+            <div class="relief-camp-card">
+              <div class="camp-top-row">
+                <div class="camp-title">
+                  <h5>Community Emergency Shelter</h5>
+                  <p><i class="fa-solid fa-location-dot"></i> Corporation School Ground, Gandhipuram</p>
+                </div>
+                <span class="status-badge badge-open">Open</span>
+              </div>
+              <div class="camp-details">
+                <span><i class="fa-solid fa-person-shelter"></i> Capacity: <b>120/300</b></span>
+                <span><i class="fa-solid fa-route"></i> Distance: <b>2.1 km</b></span>
+              </div>
+              <div class="camp-facilities">
+                <span class="facility-tag"><i class="fa-solid fa-utensils"></i> Food</span>
+                <span class="facility-tag"><i class="fa-solid fa-droplet"></i> Water</span>
+              </div>
+              <div class="camp-actions">
+                <a href="tel:04222300001" class="btn btn-outline btn-sm"><i class="fa-solid fa-phone"></i> Call</a>
+                <button class="btn btn-orange btn-sm" onclick="switchTab(13)"><i class="fa-solid fa-diamond-turn-right"></i> Directions</button>
+              </div>
+            </div>
+
+            <!-- Camp 3 -->
+            <div class="relief-camp-card">
+              <div class="camp-top-row">
+                <div class="camp-title">
+                  <h5>Red Cross Disaster Care Centre</h5>
+                  <p><i class="fa-solid fa-location-dot"></i> Near General Hospital, Race Course</p>
+                </div>
+                <span class="status-badge badge-full">Full</span>
+              </div>
+              <div class="camp-details">
+                <span><i class="fa-solid fa-person-shelter"></i> Capacity: <b>200/200</b></span>
+                <span><i class="fa-solid fa-route"></i> Distance: <b>6.8 km</b></span>
+              </div>
+              <div class="camp-facilities">
+                <span class="facility-tag"><i class="fa-solid fa-kit-medical"></i> Medical</span>
+                <span class="facility-tag"><i class="fa-solid fa-shield-halved"></i> Safety</span>
+              </div>
+              <div class="camp-actions">
+                <a href="tel:04222300002" class="btn btn-outline btn-sm"><i class="fa-solid fa-phone"></i> Call</a>
+                <button class="btn btn-orange btn-sm" onclick="switchTab(13)"><i class="fa-solid fa-diamond-turn-right"></i> Directions</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div id="view-12" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(11)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Relief Center Details</h3>
+          </div>
+          <div class="details-card">
+            <h4>Government Relief Camp</h4>
+            <p><i class="fa-solid fa-location-dot"></i> Coimbatore, TN • 800 m away</p>
+            <div class="info-badges">
+              <span><i class="fa-solid fa-door-open"></i> Open 24/7</span>
+              <span><i class="fa-solid fa-users"></i> Capacity: 500 People</span>
+            </div>
+            <div class="services-group">
+              <h5>Available Services:</h5>
+              <div class="chip-container">
+                <span class="chip"><i class="fa-solid fa-house"></i> Shelter</span>
+                <span class="chip"><i class="fa-solid fa-bowl-food"></i> Food</span>
+                <span class="chip"><i class="fa-solid fa-kit-medical"></i> Medical Aid</span>
+                <span class="chip"><i class="fa-solid fa-glass-water"></i> Drinking Water</span>
+              </div>
+            </div>
+            <button class="btn btn-orange btn-full" onclick="switchTab(13)"><i class="fa-solid fa-diamond-turn-right"></i> Get Directions</button>
+          </div>
+        </div>
+
+        <!-- Screen 13: Directions -->
+        
+        <!-- Screen 13: Live Directions (Clickable Map & Google Maps Integration) -->
+        <div id="view-13" class="view" style="display: none; width: 100%; min-height: 100vh; position: absolute; top: 0; left: 0; padding: 20px; box-sizing: border-box; z-index: 2500; background: #ffffff;">
+          <div class="view-title" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+            <button class="back-btn" onclick="switchTab(12)" style="background: #f1f5f9; border: 1px solid #cbd5e1; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #0f172a;">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div>
+              <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #0f172a;">Live Directions</h3>
+              <span style="font-size: 9px; color: #64748b; font-weight: 700; letter-spacing: 1px;">REALTIME NAVIGATION</span>
+            </div>
+          </div>
+          
+          <div class="route-header-card" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px 16px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div class="route-time">
+              <h4 style="margin: 0; font-size: 16px; font-weight: 800; color: #0f172a;">12 min <span style="font-size: 12px; color: #64748b; font-weight: 600;">(4.5 km)</span></h4>
+              <p style="margin: 4px 0 0 0; font-size: 11px; color: #16a34a; font-weight: 700;"><i class="fa-solid fa-leaf"></i> Fastest route, light traffic</p>
+            </div>
+            <!-- Start button triggers direct Google Maps navigation to PSG Convention Centre, Peelamedu -->
+            <button class="btn btn-orange btn-sm" onclick="openReliefCampNavigation(11.0254, 77.0040)" style="background: #2563eb; border: none; color: #fff; padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
+              <i class="fa-solid fa-location-arrow"></i> Start
+            </button>
+          </div>
+
+          <!-- Clickable Live Navigation Map Area (Opens Google Maps directly on Click) -->
+          <div id="directionsMap" class="directions-map-box" onclick="openReliefCampNavigation(11.0254, 77.0040)" style="width: 100%; height: 32vh; border-radius: 20px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 16px; position: relative; cursor: pointer; background: #f1f5f9;">
+            <img src="https://static-maps.yandex.ru/1.x/?lang=en-US&ll=77.0040,11.0254&z=14&l=map&size=600,400&pt=77.0040,11.0254,pm2rdm" alt="Route Map" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+            <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid #94a3b8; padding: 6px 14px; border-radius: 20px; color: #0f172a; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color: #2563eb;"></i> CLICK TO NAVIGATE IN GOOGLE MAPS
+            </div>
+          </div>
+
+          <!-- Turn-by-Turn Steps -->
+          <div class="route-steps-box" style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="step-item active-step" style="display: flex; align-items: flex-start; gap: 12px; background: #f8fafc; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0;">
+              <i class="fa-solid fa-arrow-up step-ic" style="color: #2563eb; margin-top: 3px;"></i>
+              <div>
+                <h5 style="margin: 0; font-size: 13px; font-weight: 700; color: #0f172a;">Head north on Peelamedu Main Road</h5>
+                <p style="margin: 2px 0 0 0; font-size: 11px; color: #64748b;">Continue for 1.2 km</p>
+              </div>
+            </div>
+            <div class="step-item" style="display: flex; align-items: flex-start; gap: 12px; background: #f8fafc; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0;">
+              <i class="fa-solid fa-turn-right step-ic" style="color: #2563eb; margin-top: 3px;"></i>
+              <div>
+                <h5 style="margin: 0; font-size: 13px; font-weight: 700; color: #0f172a;">Turn right onto Avinashi Road</h5>
+                <p style="margin: 2px 0 0 0; font-size: 11px; color: #64748b;">Continue for 2.1 km</p>
+              </div>
+            </div>
+            <div class="step-item" style="display: flex; align-items: flex-start; gap: 12px; background: #f8fafc; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0;">
+              <i class="fa-solid fa-flag-checkered step-ic" style="color: #16a34a; margin-top: 3px;"></i>
+              <div>
+                <h5 style="margin: 0; font-size: 13px; font-weight: 700; color: #0f172a;">Government Relief Camp</h5>
+                <p style="margin: 2px 0 0 0; font-size: 11px; color: #64748b;">PSG Convention Centre, Peelamedu, Coimbatore</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 14: My Profile -->
+   
+        <div id="view-14" class="view">
+          <div class="view-title">
+            <h3>My Profile</h3>
+          </div>
+
+          <!-- Profile Info Card -->
+           <!-- Edit Profile Modal Overlay -->
+            
+<div id="editProfileModal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>Edit Profile</h3>
+    <p>Update your personal info & profile picture.</p>
+
+    <!-- 🚨 INTHA SECTION-A EDIT PROFILE MODAL-KU ULLA PODUNGA -->
+ <!-- Profile Picture Upload Preview -->
+<div style="text-align: center; margin-bottom: 20px; position: relative;">
+  <div class="edit-avatar-box">
+    <i id="avatarIcon" class="fa-solid fa-user" style="font-size: 36px; color: #8e8e93;"></i>
+    <img id="avatarPreview" src="" alt="Profile" style="display: none;">
+  </div>
+  <label for="profilePicInput" style="display: inline-block; margin-top: 8px; font-size: 12px; color: #007aff; font-weight: bold; cursor: pointer;">
+    <i class="fa-solid fa-camera"></i> Change Photo
+  </label>
+  <input type="file" id="profilePicInput" accept="image/*" onchange="previewProfileImage(event)" style="display: none;">
+</div>
+    <div class="edit-avatar-upload-box">
+      <img src="assets/images/balaji-profile.jpeg" id="editAvatarPreview" alt="Avatar" />
+      
+      <!-- Hidden File Input for Galle                                                                                  ry Photo Selection -->
+      <input type="file" id="profileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)" />
+      
+      <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('profileImageInput').click()">
+        <i class="fa-solid fa-camera"></i> Change Photo from Gallery
+      </button>
+    </div>
+
+    <div class="input-box" style="text-align: left; margin-bottom: 10px;">
+      <label>Full Name</label>
+      <input type="text" id="editUserName" value="Balaji N" />
+    </div>
+
+    <div class="input-box" style="text-align: left; margin-bottom: 14px;">
+      <label>Location / Address</label>
+      <input type="text" id="editUserLocation" value="Peelamedu, Coimbatore" />
+    </div>
+
+    <div class="modal-btn-group">
+      <button class="btn btn-outline" onclick="closeEditProfileModal()">Cancel</button>
+      <button class="btn btn-orange" onclick="saveProfileChanges()">Save Changes</button>
+    </div>
+  </div>
+</div>
+         
+
+          <!-- Menu List Links -->
+          <div class="profile-menu-list">
+            <!-- Edit Profile -->
+           <div class="avatar-upload-box">
+            <img id="editAvatarPreview" src="assets/images/balaji-profile.jpeg" alt="Avatar" />
+            <label for="avatarInput" class="upload-badge-btn" title="Change Photo">
+              <i class="fa-solid fa-camera"></i>
+            </label>
+            <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)" />
+          </div>
+
+            <!-- 🚨 VOLUNTEER REGISTRATION MENU ITEM (NEW) -->
+            <div class="menu-row-item" onclick="switchTab(17)">
+              <div class="menu-ic-box icon-green"><i class="fa-solid fa-hands-holding-child"></i></div>
+              <div class="menu-text">
+                <h5>Volunteer Registration</h5>
+                <p>Join emergency response & rescue team</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+
+            <!-- Emergency Contacts -->
+            <div class="menu-row-item" onclick="switchTab(8)">
+              <div class="menu-ic-box icon-orange"><i class="fa-solid fa-address-book"></i></div>
+              <div class="menu-text">
+                <h5>Emergency Contacts</h5>
+                <p>Manage SOS guardian numbers</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+          </div>
+        </div>
+    <div id="editProfileModal" class="modal-overlay hidden">
+      <div class="modal-card edit-profile-card">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button class="close-modal-btn" onclick="closeEditProfileModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="edit-profile-body">
+          <!-- Profile Picture & Live Camera View Area -->
+          <div class="avatar-upload-box">
+            <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250" alt="Avatar" />
+            <video id="cameraVideo" class="hidden" autoplay playsinline></video>
+            <canvas id="cameraCanvas" class="hidden"></canvas>
+            
+            <label class="upload-badge-btn" onclick="openDeviceCamera()" title="Open Camera">
+              <i class="fa-solid fa-camera"></i>
+            </label>
+          </div>
+
+          <!-- Camera Controls (Hidden by default) -->
+          <div id="cameraControls" class="camera-controls-box hidden">
+            <button class="btn btn-orange btn-sm" onclick="captureCameraPhoto()"><i class="fa-solid fa-circle-dot"></i> Take Photo</button>
+            <button class="btn btn-outline btn-sm" onclick="stopDeviceCamera()">Cancel Camera</button>
+          </div>
+
+          <!-- Input Fields -->
+          <div class="input-box">
+            <label>Full Name</label>
+            <input type="text" id="editUserName" value="Balaji N" />
+          </div>
+
+          <div class="input-box">
+            <label>Phone Number</label>
+            <input type="tel" id="editUserPhone" value="+91 9876543210" />
+          </div>
+
+          <div class="input-box">
+            <label>Email Address</label>
+            <input type="email" id="editUserEmail" value="balaji@gmail.com" />
+          </div>
+
+          <div class="input-box">
+            <label>Current Location</label>
+            <input type="text" id="editUserLocation" value="Coimbatore, Tamil Nadu" />
+          </div>
+
+          <div class="input-box">
+            <label>Blood Group & Medical Notes</label>
+            <input type="text" id="editUserMedical" value="O+ Positive • No Allergies" />
+          </div>
+        </div>
+
+        <div class="modal-btns" style="margin-top: 15px;">
+          <button class="btn btn-outline" onclick="closeEditProfileModal()">Cancel</button>
+          <button class="btn btn-orange" onclick="saveProfileChanges()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        </div>
+      </div>
+    </div>
+    <div id="editProfileModal" class="modal-overlay hidden">
+      <div class="modal-card edit-profile-card">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button class="close-modal-btn" onclick="closeEditProfileModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="edit-profile-body">
+          <!-- Profile Picture Upload Preview -->
+          <div class="avatar-upload-box">
+            <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250" alt="Avatar" />
+            <label for="avatarInput" class="upload-badge-btn" title="Change Photo">
+              <i class="fa-solid fa-camera"></i>
+            </label>
+            <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)" />
+          </div>
+
+          <!-- Input Fields -->
+          <div class="input-box">
+            <label>Full Name</label>
+            <input type="text" id="editUserName" value="Balaji N" />
+          </div>
+
+          <div class="input-box">
+            <label>Phone Number</label>
+            <input type="tel" id="editUserPhone" value="+91 9876543210" />
+          </div>
+
+          <div class="input-box">
+            <label>Email Address</label>
+            <input type="email" id="editUserEmail" value="balaji@gmail.com" />
+          </div>
+
+          <div class="input-box">
+            <label>Current Location</label>
+            <input type="text" id="editUserLocation" value="Coimbatore, Tamil Nadu" />
+          </div>
+
+          <div class="input-box">
+            <label>Blood Group & Medical Notes</label>
+            <input type="text" id="editUserMedical" value="O+ Positive • No Allergies" />
+          </div>
+        </div>
+
+        <div class="modal-btns" style="margin-top: 15px;">
+          <button class="btn btn-outline" onclick="closeEditProfileModal()">Cancel</button>
+          <button class="btn btn-orange" onclick="saveProfileChanges()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        </div>
+      </div>
+    </div>
+        <div id="view-14" class="view">
+          <div class="profile-header-card">
+            <!-- Profile Avatar with Online Status Indicator -->
+            <div class="profile-avatar-wrapper">
+              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250" alt="Profile Picture" class="profile-user-img" />
+              <span class="status-indicator-badge" title="Active Safe Status"></span>
+            </div>
+
+            <h3 class="profile-user-name">Balaji N</h3>
+            <p class="profile-user-location"><i class="fa-solid fa-location-dot"></i> Coimbatore, Tamil Nadu</p>
+            
+            <div class="profile-status-tag">
+              <i class="fa-solid fa-shield-check"></i> Safe Zone Confirmed
+            </div>
+
+            <!-- Profile Summary Stats -->
+            <div class="profile-stats-row">
+              <div class="stat-item">
+                <h5>4</h5>
+                <p>Contacts</p>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <h5>0</h5>
+                <p>Active SOS</p>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <h5>3</h5>
+                <p>Alerts Near</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Options List -->
+          <div class="menu-list-wrapper">
+            <div class="menu-row-item" onclick="switchTab(15)">
+              <div class="menu-ic-box icon-red"><i class="fa-solid fa-user-pen"></i></div>
+              <div class="menu-text">
+                <h5>Edit Profile</h5>
+                <p>Update personal information & address</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+
+            <div class="menu-row-item" onclick="switchTab(7)">
+              <div class="menu-ic-box icon-orange"><i class="fa-solid fa-address-book"></i></div>
+              <div class="menu-text">
+                <h5>Emergency Contacts</h5>
+                <p>Manage trusted phone numbers</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+
+            <div class="menu-row-item" onclick="switchTab(6)">
+              <div class="menu-ic-box icon-blue"><i class="fa-solid fa-map-pin"></i></div>
+              <div class="menu-text">
+                <h5>Saved Locations</h5>
+                <p>Home, Work, Relative addresses</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+
+            <div class="menu-row-item" onclick="switchTab(15)">
+              <div class="menu-ic-box icon-purple"><i class="fa-solid fa-gear"></i></div>
+              <div class="menu-text">
+                <h5>Settings & Preferences</h5>
+                <p>App theme, alerts & notifications</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+
+            <div class="menu-row-item logout-btn" onclick="openLoginScreen()">
+              <div class="menu-ic-box icon-darkred"><i class="fa-solid fa-right-from-bracket"></i></div>
+              <div class="menu-text">
+                <h5 style="color: #ff4757;">Log Out</h5>
+                <p>Sign out from this device</p>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-ic"></i>
+            </div>
+          </div>
+        </div>
+        <div id="view-14" class="view">
+          <div class="profile-card">
+            <div class="big-avatar"><i class="fa-solid fa-user"></i></div>
+            <h4>Balaji N</h4>
+            <p>Coimbatore, Tamil Nadu</p>
+          </div>
+          <div class="menu-list">
+            <div class="menu-row" onclick="switchTab(15)"><i class="fa-solid fa-gear"></i> Settings <i class="fa-solid fa-chevron-right arrow"></i></div>
+            <div class="menu-row" onclick="switchTab(7)"><i class="fa-solid fa-address-book"></i> Emergency Contacts <i class="fa-solid fa-chevron-right arrow"></i></div>
+            <div class="menu-row" onclick="nextScreen(4)"><i class="fa-solid fa-right-from-bracket"></i> Log Out <i class="fa-solid fa-chevron-right arrow"></i></div>
+          </div>
+        </div>
+
+        <!-- Screen 15: Settings -->
+         <!-- Edit Profile Screen -->
+<div id="view-15" class="view">
+  <div style="padding: 15px 0;">
+    <h3 style="font-size: 18px; font-weight: bold; color: #1c1c1e; margin-bottom: 5px;">Edit Profile</h3>
+    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Update your personal and emergency details</p>
+
+    <form id="editProfileForm" onsubmit="saveProfileDetails(event)">
+      
+      <!-- Profile Picture Upload Preview -->
+      <div style="text-align: center; margin-bottom: 20px; position: relative;">
+        <div style="width: 90px; height: 90px; border-radius: 50%; background: #e5e5ea; margin: 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 3px solid #007aff; position: relative;">
+          <i id="avatarIcon" class="fa-solid fa-user" style="font-size: 40px; color: #8e8e93;"></i>
+          <img id="avatarPreview" src="" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+        </div>
+        <label for="profilePicInput" style="display: inline-block; margin-top: 8px; font-size: 12px; color: #007aff; font-weight: bold; cursor: pointer;">
+          <i class="fa-solid fa-camera"></i> Change Photo
+        </label>
+        <input type="file" id="profilePicInput" accept="image/*" onchange="previewProfileImage(event)" style="display: none;">
+      </div>
+
+      <!-- Full Name -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 12px; font-weight: bold; color: #444; display: block; margin-bottom: 5px;">Full Name</label>
+        <input type="text" id="editName" placeholder="Enter full name" value="Balaji N" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; box-sizing: border-box;">
+      </div>
+
+      <!-- Phone Number -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 12px; font-weight: bold; color: #444; display: block; margin-bottom: 5px;">Phone Number</label>
+        <input type="tel" id="editPhone" placeholder="Enter phone number" value="+91 9876543210" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; box-sizing: border-box;">
+      </div>
+
+      <!-- Emergency Contact Number -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 12px; font-weight: bold; color: #ff3b30; display: block; margin-bottom: 5px;">Emergency Contact (SOS WhatsApp)</label>
+        <input type="tel" id="editEmergencyPhone" placeholder="Enter emergency contact number" value="919876543210" required style="width: 100%; padding: 12px; border: 1px solid #ffcc00; border-radius: 10px; font-size: 14px; box-sizing: border-box; background: #fffdf0;">
+      </div>
+
+      <!-- Blood Group & Age (Two Columns) -->
+      <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+        <div style="flex: 1;">
+          <label style="font-size: 12px; font-weight: bold; color: #444; display: block; margin-bottom: 5px;">Blood Group</label>
+          <select id="editBloodGroup" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; background: white; box-sizing: border-box;">
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label style="font-size: 12px; font-weight: bold; color: #444; display: block; margin-bottom: 5px;">Age</label>
+          <input type="number" id="editAge" placeholder="Age" value="21" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; box-sizing: border-box;">
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 12px; font-weight: bold; color: #444; display: block; margin-bottom: 5px;">Residential Address</label>
+        <textarea id="editAddress" rows="2" placeholder="Enter current address" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; box-sizing: border-box;">Coimbatore, Tamil Nadu</textarea>
+      </div>
+
+      <!-- Medical Conditions / Notes -->
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 12px; font-weight: bold; color: #444; display: block; margin-bottom: 5px;">Medical Notes / Allergies</label>
+        <input type="text" id="editMedicalNotes" placeholder="e.g. No allergies, Asthma, etc." value="None" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; box-sizing: border-box;">
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" style="width: 100%; background: #007aff; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,122,255,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-floppy-disk"></i> Save Profile
+      </button>
+
+    </form>
+  </div>
+</div>
+        <div id="view-15" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(14)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Settings</h3>
+          </div>
+          <div class="setting-row">
+            <span>Dark Mode</span>
+            <input type="checkbox" id="darkToggle" onchange="toggleDarkMode()" />
+          </div>
+          <div class="setting-row">
+            <span>Location Services</span>
+            <input type="checkbox" checked />
+          </div>
+          <div class="setting-row">
+            <span>Auto SOS Quick Access</span>
+            <input type="checkbox" checked />
+          </div>
+        </div>
+
+      </div>
+      <!-- Screen 17: Volunteer Registration Form -->
+        <div id="view-17" class="view">
+          <div class="view-title">
+            <button class="back-btn" onclick="switchTab(14)"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Volunteer Registration</h3>
+          </div>
+
+          <div class="volunteer-form-wrapper">
+            <!-- Header Banner -->
+            <div class="volunteer-banner">
+              <i class="fa-solid fa-hands-holding-child"></i>
+              <div>
+                <h4>Become a Relief Volunteer</h4>
+                <p>Join our emergency response team to help rescue, provide supplies & medical aid.</p>
+              </div>
+            </div>
+
+            <!-- Registration Form -->
+            <form id="volunteerRegForm" onsubmit="handleVolunteerSubmit(event)" class="vol-form-card">
+              
+              <!-- Full Name -->
+              <div class="input-box">
+                <label><i class="fa-solid fa-user"></i> Full Name *</label>
+                <input type="text" id="volName" placeholder="e.g. Balaji N" required />
+              </div>
+
+              <!-- Phone & Age -->
+              <div class="form-row">
+                <div class="input-box">
+                  <label><i class="fa-solid fa-phone"></i> Phone *</label>
+                  <input type="tel" id="volPhone" placeholder="9876543210" required />
+                </div>
+                <div class="input-box">
+                  <label><i class="fa-solid fa-cake-candles"></i> Age *</label>
+                  <input type="number" id="volAge" placeholder="21" min="18" max="70" required />
+                </div>
+              </div>
+
+              <!-- Blood Group & Availability -->
+              <div class="form-row">
+                <div class="input-box">
+                  <label><i class="fa-solid fa-droplet"></i> Blood Group</label>
+                  <select id="volBloodGroup">
+                    <option value="O+">O+</option>
+                    <option value="A+">A+</option>
+                    <option value="B+">B+</option>
+                    <option value="AB+">AB+</option>
+                    <option value="O-">O-</option>
+                    <option value="A-">A-</option>
+                    <option value="B-">B-</option>
+                    <option value="AB-">AB-</option>
+                  </select>
+                </div>
+
+                <div class="input-box">
+                  <label><i class="fa-solid fa-clock"></i> Availability</label>
+                  <select id="volAvailability">
+                    <option value="Immediate (24/7)">Immediate (24/7)</option>
+                    <option value="Day Shift Only">Day Shift Only</option>
+                    <option value="Night Shift Only">Night Shift Only</option>
+                    <option value="Weekends Only">Weekends Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Primary Skill -->
+              <div class="input-box">
+                <label><i class="fa-solid fa-list-check"></i> Primary Skill / Expertise *</label>
+                <select id="volSkill" required>
+                  <option value="" disabled selected>Select your expertise</option>
+                  <option value="First Aid & Medical Assistance">First Aid & Medical Assistance</option>
+                  <option value="Food & Supply Distribution">Food & Supply Distribution</option>
+                  <option value="Search & Rescue Team">Search & Rescue Team</option>
+                  <option value="Vehicle / Driving Transport">Vehicle / Driving Transport</option>
+                  <option value="Shelter & Camp Management">Shelter & Camp Management</option>
+                  <option value="Technical Support">Technical Support</option>
+                </select>
+              </div>
+
+              <!-- Location -->
+              <div class="input-box">
+                <label><i class="fa-solid fa-location-dot"></i> Service City / Area *</label>
+                <input type="text" id="volLocation" value="Peelamedu, Coimbatore" required />
+              </div>
+
+              <!-- Vehicle Checkbox -->
+              <div class="checkbox-box">
+                <input type="checkbox" id="volHasVehicle" />
+                <label for="volHasVehicle">I have a bike/car available for emergency travel</label>
+              </div>
+
+              <button type="submit" class="btn btn-orange btn-full">
+                <i class="fa-solid id-card"></i> Submit Registration
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Animated Registration Complete Modal -->
+        <div id="volSuccessModal" class="vol-success-modal hidden">
+          <div class="vol-success-card">
+            <div class="animated-check-circle">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <h3>Registration Complete! 🎉</h3>
+            <p>Thank you for joining our disaster response team. Your volunteer badge is now active.</p>
+            <div class="vol-badge-preview">
+              <span id="badgeVolName">Balaji N</span>
+              <small id="badgeVolSkill">First Aid & Medical</small>
+            </div>
+            <button class="btn btn-orange btn-full" onclick="closeVolSuccessModal()">Back to Profile</button>
+          </div>
+        </div>
+<!-- COLORFUL SAFE ZONE HUB SCREEN -->
+<div id="safeZoneView" class="view hidden" style="display: none; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; background: #0f172a; color: #ffffff; padding: 18px; box-sizing: border-box; z-index: 2500; overflow-y: auto;">
+    
+    <!-- Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-arrow-left" onclick="switchTab(5)" style="font-size: 20px; cursor: pointer; color: #f43f5e; background: rgba(244, 63, 94, 0.15); padding: 8px 12px; border-radius: 12px;"></i>
+            <div>
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">Safe Zone Hub</h3>
+                <span style="font-size: 11px; color: #94a3b8;">Real-Time Protection & Emergency Zones</span>
+            </div>
+        </div>
+        <span style="background: #10b981; color: #ffffff; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold;">LIVE GPS</span>
+    </div>
+
+    <!-- Weather Card -->
+    <div style="background: #1e293b; border: 1px solid #334155; padding: 14px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-cloud-sun" style="font-size: 24px; color: #38bdf8;"></i>
+            <div>
+                <div style="font-size: 14px; font-weight: 700;">Coimbatore: 28°C</div>
+                <div style="font-size: 11px; color: #94a3b8;">Weather normal • Clear Zone</div>
+            </div>
+        </div>
+        <span style="font-size: 10px; background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 4px 8px; border-radius: 6px; font-weight: bold;">Active</span>
+    </div>
+
+    <!-- Radar Box -->
+    <div style="background: #1e1b4b; border: 1px solid #4338ca; border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: center;">
+        <div style="font-size: 12px; font-weight: 600; color: #a5b4fc; text-transform: uppercase; margin-bottom: 10px;">
+            <i class="fa-solid fa-radar" style="color: #818cf8;"></i> Live Radar Scanner
+        </div>
+        
+        <div style="height: 160px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="width: 140px; height: 140px; border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 50%; position: absolute;"></div>
+            <div style="width: 80px; height: 80px; border: 1px solid rgba(99, 102, 241, 0.6); border-radius: 50%; position: absolute;"></div>
+            <div style="width: 18px; height: 18px; background: #f43f5e; border-radius: 50%; box-shadow: 0 0 15px #f43f5e; z-index: 5;"></div>
+        </div>
+        
+        <p style="font-size: 11px; color: #94a3b8; margin: 10px 0 0 0;">Scanning 5 KM Radius Active</p>
+    </div>
+
+    <!-- Folder Cards -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 16px; padding: 14px; color: #fff;">
+            <i class="fa-solid fa-hospital" style="font-size: 22px; margin-bottom: 6px;"></i>
+            <div style="font-size: 14px; font-weight: 700;">Hospitals</div>
+            <div style="font-size: 10px; opacity: 0.9;">3 Nearby</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #4f46e5, #3730a3); border-radius: 16px; padding: 14px; color: #fff;">
+            <i class="fa-solid fa-building-shield" style="font-size: 22px; margin-bottom: 6px;"></i>
+            <div style="font-size: 14px; font-weight: 700;">Police Station</div>
+            <div style="font-size: 10px; opacity: 0.9;">1.2 KM Away</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #ea580c, #c2410c); border-radius: 16px; padding: 14px; color: #fff;">
+            <i class="fa-solid fa-fire-extinguisher" style="font-size: 22px; margin-bottom: 6px;"></i>
+            <div style="font-size: 14px; font-weight: 700;">Fire Station</div>
+            <div style="font-size: 10px; opacity: 0.9;">2.4 KM Away</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #059669, #047857); border-radius: 16px; padding: 14px; color: #fff;">
+            <i class="fa-solid fa-person-shelter" style="font-size: 22px; margin-bottom: 6px;"></i>
+            <div style="font-size: 14px; font-weight: 700;">Safe Shelters</div>
+            <div style="font-size: 10px; opacity: 0.9;">2 Zones</div>
+        </div>
+    </div>
+</div>
+      <!-- Bottom Nav Bar -->
+     <!-- Bottom Nav Bar (6 Items with Shield Button) -->
+<div class="bottom-navbar">
+    <button class="nav-icon active" onclick="switchTab(5)"><i class="fa-solid fa-house"></i></button>
+    <button class="nav-icon" onclick="switchTab(8)"><i class="fa-solid fa-bell"></i></button>
+    <button class="nav-icon" onclick="switchTab(10)"><i class="fa-solid fa-robot"></i></button>
+    <button class="nav-icon" onclick="switchTab(11)"><i class="fa-solid fa-map-location-dot"></i></button>
+    
+    <!-- Shield / Safe Zone Button (Added) -->
+   <button class="nav-icon" onclick="openSafetyHubView()"><i class="fa-solid fa-shield-halved"></i></button>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
